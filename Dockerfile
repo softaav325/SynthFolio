@@ -3,10 +3,12 @@ FROM python:3.11-slim AS builder
 
 WORKDIR /build
 
-# Install system dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
     && rm -rf /var/lib/apt/lists/*
+
+RUN python -m venv /opt/venv
+ENV PATH="/opt/venv/bin:$PATH"
 
 COPY requirements.txt .
 
@@ -16,18 +18,17 @@ RUN pip install --no-cache-dir --extra-index-url https://download.pytorch.org/wh
     torchvision==0.17.2
 
 RUN pip install --no-cache-dir --default-timeout=1000 --retries 10 \
-    --user -r requirements.txt
+    -r requirements.txt
 
 # Final
 FROM python:3.11-slim AS runner
 
-# Working directory (using a name different from the 'app' package to avoid import conflicts)
 WORKDIR /app_project
 
-COPY --from=builder /root/.local /root/.local
+COPY --from=builder /opt/venv /opt/venv
 
-# Set ENV PYTHONPATH to the current working directory
-ENV PATH=/root/.local/bin:$PATH
+# Add venv in PATH
+ENV PATH="/opt/venv/bin:$PATH"
 ENV PYTHONPATH=/app_project
 
 COPY . .
