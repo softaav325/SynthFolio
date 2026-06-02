@@ -21,6 +21,7 @@ def create_app():
     return app
 
 app = create_app()
+# Vercel requires the app object to be named 'app' in the entry point
+# and the handler to be exposed.
 
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=8000)
+
