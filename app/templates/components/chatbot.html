@@ -1,0 +1,40 @@
+<div id="ai-chat-trigger" class="chat-trigger shadow-lg">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" class="bi bi-chat-dots-fill" viewBox="0 0 16 16">
+        <path d="M1.5 2a.5.5 0 0 0 0 1h13a.5.5 0 0 0 0-1h-13zM1 5.5a.5.5 0 0 0 0 1h14a.5.5 0 0 0 0-1H1zM1 10a.5.5 0 0 0 0 1h14a.5.5 0 0 0 0-1H1z"/>
+    </svg>
+</div>
+
+<div id="ai-chat-widget" class="chat-widget shadow-lg d-none">
+    <div class="chat-header">
+        <div class="d-flex align-items-center">
+            <div class="bot-avatar">AI</div>
+            <div class="ms-2">
+                <strong class="d-block">Portfolio Assistant</strong>
+                <small class="text-success">Online</small>
+            </div>
+        </div>
+        <button id="close-chat" class="btn-close btn-close-white"></button>
+    </div>
+    
+    <div id="chat-messages" class="chat-messages">
+        <!-- Сообщения будут добавляться сюда динамически -->
+        <div class="message bot-message">
+            <div class="bubble">Привет! Я AI-помощник. Чем могу помочь в изучении этого портфолио?</div>
+        </div>
+    </div>
+
+    <div id="chat-typing" class="typing-indicator d-none">
+        <span></span><span></span><span></span>
+    </div>
+
+    <div class="chat-input-area">
+        <form id="chat-form" class="d-flex">
+            <input type="text" id="user-input" class="form-control" placeholder="Задайте вопрос..." autocomplete="off">
+            <button type="submit" id="send-btn" class="btn btn-primary ms-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-send-fill" viewBox="0 0 16 16">
+                    <path d="M15.964.686a.5.5 0 0 0-.61-.718.45.45 0 0 0-.24.154L.5.803a.5.5 0 0 0-.452.766l1.13 2.41a.5.5 0 0 0 .354.447l12 11.5a.5.5 0 0 0 .715-.275l-1.13-2.41a.5.5 0 0 0-.24-.154z"/>
+                </svg>
+            </button>
+        </form>
+    </div>
+</div>
