@@ -1,7 +1,8 @@
 
 services:
   web:
-    build: .
+    #build: .
+    image: web
     container_name: web
     restart: always
     env_file:
