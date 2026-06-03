@@ -1,4 +1,24 @@
 
+.chat-trigger {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 60px;
+    height: 60px;
+    background-color: #0d6efd;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 1051;
+    transition: transform 0.2s ease;
+}
+
+.chat-trigger:hover {
+    transform: scale(1.1);
+}
+
 .chat-widget {
     position: fixed;
     bottom: 20px;
@@ -50,7 +70,6 @@
     background-color: #1f1f1f;
 }
 
-/* Стиль сообщений как в ChatGPT */
 .message {
     display: flex;
     width: 100%;
@@ -86,7 +105,6 @@
     border-bottom-right-radius: 4px;
 }
 
-/* Индикатор набора текста */
 .typing-indicator {
     padding: 5px 15px;
     display: flex;
@@ -136,7 +154,6 @@
     justify-content: center;
 }
 
-/* Скрытие виджета */
 .chat-widget.hidden {
     transform: translateY(120%);
     opacity: 0;

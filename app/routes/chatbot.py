@@ -6,24 +6,23 @@ import logging
 import time
 import html
 import requests
-# Настройка логгера
+# Config logger
 logger = logging.getLogger("chatbot_routes")
-
 chatbot_bp = Blueprint('chatbot', __name__)
 
-# Константы
+# Constants
 MAX_MESSAGE_LENGTH = 2000
-HISTORY_LIMIT = 20  # Сохраняем последние 20 сообщений
+HISTORY_LIMIT = 20  # Save last 20 messenges
 
 @chatbot_bp.route('/chat', methods=['POST'])
 def chat():
     """
-    Эндпоинт для получения ответов от AI с усиленной безопасностью и поддержкой памяти.
+    Endpoint from AI
     """
-    # 1. Защита от спама (Rate Limiting)
+    # 1. Security from spam (Rate Limiting)
     current_time = time.time()
     last_request_time = session.get('last_request_time', 0)
-    if current_time - last_request_time < 3:  # Минимум 3 секунды между запросами
+    if current_time - last_request_time < 3:  # Min 3 sec
         logger.warning(f"Rate limit exceeded by IP: {request.remote_addr}")
         return jsonify({"error": "Too many requests. Please wait a few seconds."}), 429
     
@@ -34,7 +33,7 @@ def chat():
     if not data:
         return jsonify({"error": "Missing request body"}), 400
 
-    # 2. Санитизация и ограничение длины входных данных
+    # 2. Limit length line
     raw_user_message = data.get('message', '').strip()
     
     if not raw_user_message:
@@ -44,10 +43,10 @@ def chat():
         logger.warning(f"Message too long from IP: {request.remote_addr}. Length: {len(raw_user_message)}")
         return jsonify({"error": f"Message too long. Maximum length is {MAX_MESSAGE_LENGTH} characters"}), 413
 
-    # Экранирование HTML-тегов для защиты от XSS
+    # Security from XSS
     user_message = html.escape(raw_user_message)
 
-    # 3. Работа с историей сообщений в сессии
+    # 3. Work with history
     if 'chat_history' not in session:
         session['chat_history'] = []
 
@@ -55,13 +54,11 @@ def chat():
     history.append({"role": "user", "content": user_message})
 
     try:
-        # 4. RAG: Поиск релевантного контекста в базе знаний
+        # 4. RAG
         context = rag_service.get_relevant_context(user_message)
         
-        # Формируем расширенный системный промпт с контекстом
         rag_system_prompt = f"{SYSTEM_PROMPT}\n\n### CONTEXT FROM KNOWLEDGE BASE:\n{context if context else 'No specific information found in knowledge base.'}\n\n### INSTRUCTIONS:\nUse the provided context to answer the user's question accurately. If the answer is not in the context and you don't know it, politely say that the information is not available in the profile."
 
-        # Запрос к AI сервису с обогащенным промптом
         ai_response = ai_service.send_message(history, system_prompt=rag_system_prompt)
 
         if ai_response['status'] == 'success':
