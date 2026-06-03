@@ -14,8 +14,8 @@ COPY requirements.txt .
 
 # Install the lightweight CPU version of torch first, so that pip doesn't download the 3+ GB CUDA version
 RUN pip install --no-cache-dir --extra-index-url https://download.pytorch.org/whl/cpu \
-    torch==2.2.2 \
-    torchvision==0.17.2
+    "torch>=2.4.1" \
+    "torchvision>=0.19.1"
 
 RUN pip install --no-cache-dir --default-timeout=1000 --retries 10 \
     -r requirements.txt

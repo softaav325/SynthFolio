@@ -1,6 +1,6 @@
 name: Docker Image Build and Push
 
-on:
+on:    #  trigger
   push:
     branches: [ "main" ]
   pull_request:
@@ -8,10 +8,10 @@ on:
 
 jobs:
   build-and-push:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest  # image to use
     permissions:
-      contents: read
-      packages: write
+      contents: read  # read registry
+      packages: write # write registry
 
     steps:
       - name: Checkout repository
@@ -42,7 +42,8 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
+          tags: tag
+        #     ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=gha
+        #  cache-from: type=gha
           cache-to: type=gha,mode=max
