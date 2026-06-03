@@ -20,6 +20,12 @@ RUN pip install --no-cache-dir --extra-index-url https://download.pytorch.org/wh
 RUN pip install --no-cache-dir --default-timeout=1000 --retries 10 \
     -r requirements.txt
 
+# For cache Hugging Face
+ENV HF_HOME=/opt/venv/hf_cache
+
+# Donload model
+RUN python -c "from sentence_transformers import SentenceTransformer; SentenceTransformer('all-MiniLM-L6-v2')"
+
 # Final
 FROM python:3.11-slim AS runner
 
@@ -28,8 +34,9 @@ WORKDIR /app_project
 COPY --from=builder /opt/venv /opt/venv
 
 # Add venv in PATH
-ENV PATH="/opt/venv/bin:$PATH"
-ENV PYTHONPATH=/app_project
+ENV PATH="/opt/venv/bin:$PATH" \
+    PYTHONPATH=/app_project \
+    GUNICORN_CMD_ARGS="--timeout 60"
 
 COPY . .
 

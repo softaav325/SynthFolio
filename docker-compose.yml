@@ -2,7 +2,7 @@
 services:
   web:
     #build: .
-    image: web
+    image: ghcr.io/softaav325/synthfolio/web:latest
     container_name: web
     restart: always
     env_file:
